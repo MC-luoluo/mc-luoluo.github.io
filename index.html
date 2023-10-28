@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+		<title>Minecraft UUID 转换</title>
+		<link rel="stylesheet" href="style.css?v=7">
+		<script defer src="convert.js?v=11"></script>
+		<script>
+			if (typeof DataView !== 'function' || !('setBigUint64' in DataView.prototype)) {
+				alert('This browser does not support writing and reading 64-bit integers, which is required by the converter. Try updating your browser.')
+			}
+		</script>
+	</head>
+	<body>
+		<div class="content">
+			<h1>Minecraft UUID 转换</h1>
+			<h2>- 适用版本 1.16+ -</h2>
+			<div class="row buttons">
+				<input type="button" value="随机数据" id="gen-random">
+			</div>
+			<div class="row view column-mobile" data-view-id="hex">
+				<div class="action-buttons">
+					复制:
+					<a href='javascript:;'class="copy-link">链接</a>
+					<a href='javascript:;'class="copy-data">数据</a>
+				</div>
+				<label><strong>十六进制: </strong>
+					<span class="expandable">"
+						<input id="hex"
+							value="00000000-0000-0000-0000-000000000000"
+							placeholder="00000000-0000-0000-0000-000000000000"
+							autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+							required pattern="\s*([0-9a-fA-F]{1,8}-[0-9a-fA-F]{1,4}-[0-9a-fA-F]{1,4}-[0-9a-fA-F]{1,4}-[0-9a-fA-F]{1,12}|[0-9a-fA-F]{1,32})\s*">"
+					</span>
+				</label>
+			</div>
+			<div class="row view" data-view-id="halves">
+				<div class="action-buttons">
+					复制:
+					<a href='javascript:;'class="copy-link">链接</a>
+					<a href='javascript:;'class="copy-data">数据</a>
+				</div>
+				<label><strong>高64位: </strong>
+					<input id="most"
+						value="0" inputmode="numeric"
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+						required pattern="\s*[-+]?\d+\s*">L,
+				</label>
+				<label class="space-at-end-mobile"><strong>低64位: </strong>
+					<input id="least"
+						value="0" inputmode="numeric"
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+						required pattern="\s*[-+]?\d+\s*">L
+				</label>
+			</div>
+			<div class="row view" data-view-id="array">
+				<div class="action-buttons">
+					复制:
+					<a href='javascript:;'class="copy-link">链接</a>
+					<a href='javascript:;'class="copy-data">数据</a>
+				</div>
+				<label><strong>整型数组: </strong>[I;
+					<input id="array0"
+						value="0" inputmode="numeric"
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+						required pattern="\s*[-+]?\d+\s*">,
+				</label>
+				<label>
+					<input id="array1"
+						value="0" inputmode="numeric"
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+						required pattern="\s*[-+]?\d+\s*">,
+				</label>
+				<label>
+					<input id="array2"
+						value="0" inputmode="numeric"
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+						required pattern="\s*[-+]?\d+\s*">,
+				</label>
+				<label>
+					<input id="array3"
+						value="0" inputmode="numeric"
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+						required pattern="\s*[-+]?\d+\s*">
+						]
+				</label>
+			</div>
+			<div class="row view" data-view-id="player">
+				<label>
+					<div id="player-spinner" class="player-spinner">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<canvas id="player-face" class="player-face" width="8" height="8"></canvas>
+					<strong> 玩家名：</strong>
+					"<input id="player-name" class="start-align"
+						placeholder="----"
+						autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">"
+				</label>
+			</div>
+			<div class="info">
+				<p>
+					如有需要，您可以一次粘贴多个整型数值，例如：
+					<code>-1441170246,<wbr>-964146233,<wbr>-1858403660,<wbr>2035216381</code>.
+				</p>
+				<h3><a href="/">返回主站</a></h3>
+			</div>
+		</div>
+		<textarea id="copy-area" tabindex="-1" readonly style="
+			position: fixed;
+			top: -999px;
+			height: 0;
+			"></textarea>
+	</body>
+</html>
