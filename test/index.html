@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* 隐藏其他内容 */
+        .content {
+            display: none;
+        }
+    </style>
+    <title>根据选项显示内容</title>
+</head>
+<body>
+
+    <!-- 下拉框 -->
+    <label for="myDropdown">选择一个选项：</label>
+    <select id="myDropdown">
+        <option value="option1">选项1</option>
+        <option value="option2">选项2</option>
+        <option value="option3">选项3</option>
+    </select>
+
+    <!-- 显示对应内容的区域 -->
+    <div id="contentOption1" class="content">选项1的内容</div>
+    <div id="contentOption2" class="content">选项2的内容</div>
+    <div id="contentOption3" class="content">选项3的内容</div>
+
+    <script>
+        // JavaScript 代码，用于处理下拉框变化事件
+        document.getElementById('myDropdown').addEventListener('change', function() {
+            // 获取选中的选项的值
+            var selectedOption = this.value;
+
+            // 隐藏所有内容区域
+            var allContents = document.querySelectorAll('.content');
+            allContents.forEach(function(content) {
+                content.style.display = 'none';
+            });
+
+            // 显示选中选项对应的内容区域
+            var selectedContent = document.getElementById('content' + selectedOption);
+            if (selectedContent) {
+                selectedContent.style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+</html>
