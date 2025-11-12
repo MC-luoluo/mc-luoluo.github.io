@@ -1,0 +1,16 @@
+html {
+    font-size: 18px;
+    font-family: "Open Sans", sans-serif;
+    background-image: url("https://mcluoluo.com/f/bgi.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+body {
+    text-align: right;
+}
+
+p, h1, h2,h3, a {
+    color: #174EA0;
+}
