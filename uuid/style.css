@@ -319,3 +319,7 @@ input:invalid {
 		opacity: 0;
 	}
 }
+
+:lang(zh) body,.action-buttons{
+    font-family: "Open Sans", sans-serif;
+}

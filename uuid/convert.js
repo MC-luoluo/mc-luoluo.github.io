@@ -54,8 +54,8 @@ class PlayerNameInput extends EventTarget {
 		this.cancel();
 		const alreadyLoaded = [this.loadedNameOrUuid];
 		if (this.playerData) {
-			alreadyLoaded.push(this.playerData.username);
-			alreadyLoaded.push(this.playerData.uuid);
+			alreadyLoaded.push(this.playerData.name);
+			alreadyLoaded.push(this.playerData.id);
 		}
 		if (alreadyLoaded.indexOf(nameOrUuid) >= 0) {
 			return;
@@ -91,8 +91,14 @@ class PlayerNameInput extends EventTarget {
 	
 	async makeRequest(nameOrUuid, signal, isInternalLoad) {
 		try {
-			const url = 'https://api.ashcon.app/mojang/v2/user/' + encodeURIComponent(nameOrUuid);;
-			console.log('Requesting ', url);
+            let url;
+            if (nameOrUuid.length <= 16)
+                url = 'https://mcapi.mcluoluo.com/name/' + encodeURIComponent(nameOrUuid);
+
+            if (nameOrUuid.length === 32 || nameOrUuid.length === 36)
+                url = 'https://mcapi.mcluoluo.com/uuid/' + encodeURIComponent(nameOrUuid);
+
+			//console.log('Requesting ', url);
 			this.spinner.classList.add('loading');
 			
 			const response = await fetch(url, {
@@ -104,25 +110,31 @@ class PlayerNameInput extends EventTarget {
 				return this.reportError(
 					'No such player', nameOrUuid, isInternalLoad);
 			}
-			const data = await response.json();
+			let data = await response.json();
 			
 			if (signal.aborted) return;
 			this.abortController = null;
 			
-			if (!data.uuid || !data.username) {
+			if (!data.id || !data.name) {
 				console.error('Loading player data failed: ', data);
 				return this.reportError(
 					'Failed to get data', nameOrUuid, isInternalLoad);
 			}
+
+            if (!Array.isArray(data.properties)) {
+                const response = await fetch('https://mcapi.mcluoluo.com/uuid/' + encodeURIComponent(data.id));
+                data = await response.json();
+            }
+            const texturedata = JSON.parse(atob(data.properties[0].value));
+
+            this.texture.src = texturedata.textures.SKIN.url;
 			
 			this.loadedNameOrUuid = nameOrUuid;
 			this.playerData = data;
-			if (this.input.value !== data.username) {
-				this.input.value = data.username;
+			if (this.input.value !== data.name) {
+				this.input.value = data.name;
 			}
-			if (data.textures && data.textures.skin) {
-				this.texture.src = 'data:image/png;base64,' + data.textures.skin.data;
-			}
+
 			this.dispatchEvent(new Event('load'));
 		} catch (err) {
 			if (err.name === 'AbortError') return;
@@ -239,7 +251,7 @@ const uuidViews = {
 		],
 		parse: ([playerName]) => {
 			if (playerName.playerData) {
-				parseUUID(playerName.playerData.uuid, uuid);
+				parseUUID(playerName.playerData.id, uuid);
 			} else {
 				uuidBytes.fill(0);
 			}
