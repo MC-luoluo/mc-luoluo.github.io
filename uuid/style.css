@@ -10,6 +10,10 @@ html, body {
 	padding: 0;
 }
 
+:lang(zh) body, :lang(zh) .action-buttons, input:lang(zh){
+    font-family: "Open Sans", sans-serif;
+}
+
 body, input {
 	font-family: monospace;
 	font-size: 15px;
@@ -318,8 +322,4 @@ input:invalid {
 	100% {
 		opacity: 0;
 	}
-}
-
-:lang(zh) body,.action-buttons{
-    font-family: "Open Sans", sans-serif;
 }
